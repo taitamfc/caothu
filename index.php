@@ -410,13 +410,14 @@
 				label_dates : [],
 				filter_leagues : [],
 				options : '',
+				api_url : 'http://localhost/PHP/caothu/api/',
 			},
 			methods: {
 				get_matches(){
 					this.isRunSchedule = true;
 					
 					axios
-					.get('http://localhost/PHP/caothu/api/?c=Schedule'+this.options)
+					.get(this.api_url + '?c=Schedule'+this.options)
 					.then( response => {
 						this.isRunSchedule = false;
 						this.matchIds = response.data.matchIds;
@@ -429,7 +430,7 @@
 				get_matches_odds(){
 					this.isRunningOdds = true;
 					axios
-					.get('http://localhost/PHP/caothu/api/?c=Odds&matchIds='+this.matchIds+this.options)
+					.get(this.api_url + '?c=Odds&matchIds='+this.matchIds+this.options)
 					.then( response => {
 						this.matches_odds = response.data.items;
 						console.log('league_matches');
@@ -444,7 +445,7 @@
 					}
 					this.isRunningEuropeanHalf = true;
 					axios
-					.get('http://localhost/PHP/caothu/api/?c=Odds&a=european_half&&matchIds='+this.matchIds+this.options)
+					.get(this.api_url + '?c=Odds&a=european_half&&matchIds='+this.matchIds+this.options)
 					.then( response => {
 						this.matches_european_half_odds = response.data.items;
 						this.isRunningEuropeanHalf = false;
