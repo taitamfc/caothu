@@ -1,0 +1,34 @@
+p{margin:0;}
+.btn-primary{font-weight:500;}
+[class^="icon-"],[class*=" icon-"]{position:relative;display:inline-block;}
+[class^="icon-"]:before,[class*=" icon-"]:before{content:'';position:relative;display:inline-block;-webkit-mask-repeat:no-repeat;-webkit-mask-position:center;-webkit-mask-size:contain;background-color:#000;transition:color .5s;}
+.icon-view:before{top:-1px;width:10px;height:6px;-webkit-mask-image:url(assets/img/chevron-small-right.svg);background-color:#0d6efd;}
+.icon-up:before{width:10px;height:10px;-webkit-mask-image:url(assets/img/arrow-thick-up.svg);background-color:#0d6efd;}
+.icon-down:before{top:1px;width:10px;height:10px;-webkit-mask-image:url(assets/img/arrow-thick-down.svg);background-color:red;}
+.dntable-list{font-size:11px;text-align:center;border-color:rgba(0,68,98,.12);}
+.dntable-list::-webkit-scrollbar{display:none;}
+.dntable-list thead{background:#03a9f4;text-align:center;}
+.dntable-list tbody td{height:1px;padding:4px 1px;}
+.dntable-list thead tr{vertical-align:middle;}
+.dntable-list>:not(caption)>*>*{padding:8px 2px;}
+.dntable-list .th-league{width:100px;}
+.dntable-list .th-match{width:100px;}
+.dntable-list .th-handicap-tips{width:80px;}
+.dntable-list .th-overunder-bd-live{width:60px;}
+.dntable-list .th-overunder-tip{width:40px;}
+.dntable-list .home-team{font-weight:500;color:#72a2f5;}
+.dntable-list .away-team{font-weight:500;color:#f54747;}
+.dntable-list .tr__start:nth-child(8n + 1),.dntable-list .tr__start:nth-child(8n + 1) + tr,.dntable-list .tr__start:nth-child(8n + 1) + tr + tr,.dntable-list .tr__start:nth-child(8n + 1) + tr + tr +tr{background:#efefef;}
+.dntable-list .el--down{color:red;}
+.dntable-list .el--up{color:#2196f3;}
+.dntable-list .el--view{display:flex;align-items:center;justify-content:center;text-decoration:none;color:#0d6efd;}
+.dntable-list .el--view:hover{text-decoration:underline;}
+@media (max-width:1199px){
+        .dntable-filter{min-width:1300px;}
+        .dntable-list{min-width:1300px;}
+}
+@media (max-width:575px){
+    .dntable-list>:not(caption)>*>* {
+        padding: 4px 2px;
+    }
+}
