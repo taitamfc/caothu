@@ -9,13 +9,8 @@ class ScheduleController extends BaseController
 {
     public function index()
     {
-		
-
-		$date   = ( isset($_GET['date']) ) ? $_GET['date'] : date('Y-m-d');
+		$date   = ( isset($_GET['date']) && $_GET['date'] !='' ) ? $_GET['date'] : date('Y-m-d');
 		$sl_leagues   = ( isset($_GET['leagues']) && $_GET['leagues'] != '' ) ? explode(',',$_GET['leagues']) : [];
-		
-		
-		
 		$only_leagues = [];
 		if( date('w',strtotime($date)) == 6 || date('w',strtotime($date)) == 7 ){
 			$only_leagues = [
@@ -25,15 +20,10 @@ class ScheduleController extends BaseController
 				'Spanish La Liga' => 1134,
 			];
 		}
-		
-		
 		//lich thi dau
-		$schedule_url   = API_URL."/sport/football/schedule?api_key=".API_KEY.'&date='.$date;
-
+		$schedule_url   = API_URL."/sport/football/schedule/basic?api_key=".API_KEY.'&date='.$date;
 		$json_data      = file_get_contents($schedule_url);
 		$all_schedules      = json_decode($json_data)->data;
-
-
 		usort($all_schedules, function($a, $b) {
 			if($a->matchTime == $b->matchTime) return 0;
 			return $a->matchTime > $b->matchTime ? 1 : -1;
