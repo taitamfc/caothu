@@ -109,6 +109,17 @@
                 <th class="th-overunder-tip">Tips</th>
               </tr>
             </thead>
+            <tbody class="tbody-loading" v-if="isRunning">
+              <tr>
+                <td colspan="21">
+                  <div class="sc-loading d-flex justify-content-center p-5">
+                    <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
             <tbody v-if="matches" v-for="(items, index) of matches">
 
               <tr v-for="item of items" 
@@ -145,13 +156,7 @@
                     </div>
                     <div class="tr__col el--up handicap.instantHandicap">
                       <span v-if="typeof matches_odds[item.matchId]['handicap'] != 'undefined'">
-                        <span v-if="matches_odds[item.matchId]['handicap']['instantHandicap'] > 0">
-                          - {{ matches_odds[item.matchId]['handicap']['instantHandicap'] }}
-                        </span>
-                        <span v-if="matches_odds[item.matchId]['handicap']['instantHandicap'] < 0">
-                          {{ Math.abs(matches_odds[item.matchId]['handicap']['instantHandicap']) }}
-                        </span>
-                        <span v-if="matches_odds[item.matchId]['handicap']['instantHandicap'] == 0">0</span>
+                        {{ matches_odds[item.matchId]['handicap']['instantHandicapAway'] }}
                       </span>
                     </div>
                   </div>
@@ -163,13 +168,7 @@
                     </div>
                     <div class="tr__col el--up handicapHalf.instantHandicap">
                       <span v-if="typeof matches_odds[item.matchId]['handicapHalf'] != 'undefined'">
-                        <span v-if="matches_odds[item.matchId]['handicapHalf']['instantHandicap'] > 0">
-                          - {{ matches_odds[item.matchId]['handicapHalf']['instantHandicap'] }}
-                        </span>
-                        <span v-if="matches_odds[item.matchId]['handicapHalf']['instantHandicap'] < 0">
-                          {{ Math.abs(matches_odds[item.matchId]['handicapHalf']['instantHandicap']) }}
-                        </span>
-                        <span v-if="matches_odds[item.matchId]['handicapHalf']['instantHandicap'] == 0">0</span>
+                        {{ matches_odds[item.matchId]['handicapHalf']['instantHandicapAway'] }}
                       </span>
                     </div>
                   </div>
@@ -201,12 +200,7 @@
                     </div>
                     <div class="tr__col el--up handicap.initialHandicap">
                       <span v-if="typeof matches_odds[item.matchId]['handicap'] != 'undefined'">
-                      <span v-if="matches_odds[item.matchId]['handicap']['initialHandicap'] > 0">
-                        - {{ matches_odds[item.matchId]['handicap']['initialHandicap'] }}
-                      </span>
-                      <span v-if="matches_odds[item.matchId]['handicap']['initialHandicap'] < 0">
-                        {{ Math.abs(matches_odds[item.matchId]['handicap']['initialHandicap']) }}
-                      </span>
+                        {{ matches_odds[item.matchId]['handicap']['initialHandicapAway'] }}
                       </span>
                     </div>                    
                   </div>
@@ -218,12 +212,7 @@
                     </div>
                     <div class="tr__col el--up handicapHalf.initialHandicap">
                       <span v-if="typeof matches_odds[item.matchId]['handicapHalf'] != 'undefined'">
-                      <span v-if="matches_odds[item.matchId]['handicapHalf']['initialHandicap'] > 0">
-                        - {{ matches_odds[item.matchId]['handicapHalf']['initialHandicap'] }}
-                      </span>
-                      <span v-if="matches_odds[item.matchId]['handicapHalf']['initialHandicap'] < 0">
-                        {{ Math.abs(matches_odds[item.matchId]['handicapHalf']['initialHandicap']) }}
-                      </span>
+                        {{ matches_odds[item.matchId]['handicapHalf']['initialHandicapAway'] }}
                       </span>
                     </div>
                     
@@ -317,23 +306,23 @@
                 </td>
                 <td v-if="matches_odds">
                   <div class="tr__row">
-                    <div class="tr__col">
+                    <div class="tr__col handicap.fluctuatingHandicap">
                       <span v-if="typeof matches_odds[item.matchId]['handicap'] != 'undefined'"></span>
                         <span v-if="matches_odds[item.matchId]['handicap']['fluctuatingHandicapUp']">
-                          {{ item.homeName }} + {{ matches_odds[item.matchId]['handicap']['fluctuatingHandicap'] }}
+                          {{ item.homeName }} +{{ matches_odds[item.matchId]['handicap']['fluctuatingHandicap'] }}
                         </span>
                         <span v-if="!matches_odds[item.matchId]['handicap']['fluctuatingHandicapUp']">
-                          Ko có tips FT 
+                          -
                         </span>
                       </span>
                     </div>
-                    <div class="tr__col">
+                    <div class="tr__col handicapHalf.fluctuatingHandicapUp">
                       <span v-if="typeof matches_odds[item.matchId]['handicapHalf'] != 'undefined'">
                         <span v-if="matches_odds[item.matchId]['handicapHalf']['fluctuatingHandicapUp']">
-                          {{ item.homeName }} + {{ matches_odds[item.matchId]['handicapHalf']['fluctuatingHandicap'] }}
+                          {{ item.homeName }} +{{ matches_odds[item.matchId]['handicapHalf']['fluctuatingHandicap'] }}
                         </span>
                         <span v-if="!matches_odds[item.matchId]['handicapHalf']['fluctuatingHandicapUp']">
-                          Ko có tips HT 
+                          - 
                         </span>
                       </span>
                     </div>
@@ -450,20 +439,20 @@
                 </td>
                 <td v-if="matches_odds && typeof matches_odds[item.matchId]['overUnder'] != 'undefined'">
                   <div class="tr__row">
-                    <div class="tr__col">
+                    <div class="tr__col overUnder.fluctuatingHandicap">
                       <span v-if="typeof matches_odds[item.matchId]['overUnder'] != 'undefined'"></span>
                         <span v-if="matches_odds[item.matchId]['overUnder']['fluctuatingHandicapUp']">
-                          Over + {{ matches_odds[item.matchId]['overUnder']['fluctuatingHandicap'] }}
+                          Over +{{ matches_odds[item.matchId]['overUnder']['fluctuatingHandicap'] }}
                         </span>
                         <span v-if="!matches_odds[item.matchId]['overUnder']['fluctuatingHandicapUp']">
                           -
                         </span>
                       </span>
                     </div>
-                    <div class="tr__col">
+                    <div class="tr__col overUnderHalf.fluctuatingHandicap">
                       <span v-if="typeof matches_odds[item.matchId]['overUnderHalf'] != 'undefined'">
                         <span v-if="matches_odds[item.matchId]['overUnderHalf']['fluctuatingHandicapUp']">
-                          Over + {{ matches_odds[item.matchId]['overUnderHalf']['fluctuatingHandicap'] }}
+                          Over +{{ matches_odds[item.matchId]['overUnderHalf']['fluctuatingHandicap'] }}
                         </span>
                         <span v-if="!matches_odds[item.matchId]['overUnderHalf']['fluctuatingHandicapUp']">
                           -
@@ -499,7 +488,7 @@
           label_dates : [],
           filter_leagues : [],
           options : '',
-          api_url : 'http://localhost/caothu/api/',
+          api_url : 'http://localhost/PHP/caothu/api/',
           f_date : '',
           f_handicap : '',
           f_overunder : '',
@@ -507,21 +496,21 @@
         },
         methods: {
           get_matches(){
-            this.isRunSchedule = true;
+            this.isRunning = true;
             
             axios
             .get(this.api_url + '?c=Schedule'+this.options)
             .then( response => {
-              this.isRunSchedule = false;
+              this.isRunning = false;
               this.matchIds = response.data.matchIds;
               this.matches = response.data.matches;
               this.leagues = response.data.leagues;
-  
+              
               this.get_matches_odds();
             });
           },
           get_matches_odds(){
-            this.isRunningOdds = true;
+            this.isRunning = true;
             axios
             .get(this.api_url + '?c=Odds&matchIds='+this.matchIds+this.options)
             .then( response => {
@@ -529,28 +518,9 @@
               //this.get_matches_odds_european_half();
               //update get_matches_odds_european_half 
               this.canRunningEuropeanHalf = true;
+              this.isRunning = false;
             });
           },
-          get_matches_odds_european_half(){
-            if( this.matchIds.length == 0 ){
-              return true;
-            }
-            this.isRunningEuropeanHalf = true;
-            axios
-            .get(this.api_url + '?c=Odds&a=european_half&&matchIds='+this.matchIds+this.options)
-            .then( response => {
-              this.matches_european_half_odds = response.data.items;
-              this.isRunningEuropeanHalf = false;
-              
-              jQuery('#tyle_bong_da_hom_nay .leagueGroup').each( function(key,val){
-                if( jQuery(val).find('.oddsContent').length == 0 ){
-                  jQuery(val).hide();
-                }
-              });
-              
-            });
-          },
-  
           get_next_days(){
             var startDay = new Date();
             //var thisDay = new Date();

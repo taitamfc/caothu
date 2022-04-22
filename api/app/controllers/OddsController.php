@@ -117,10 +117,12 @@ class OddsController extends BaseController
 				switch($odd_type){
 					case 'handicap':
 						$odd_type_arr = [
-							'initialHandicap' 	=> $orr_arr[2],
+							'initialHandicap' 		=> ( $orr_arr[2] > 0 ) ? -$orr_arr[2] : $orr_arr[2],
+							'initialHandicapAway' 	=> ( $orr_arr[2] > 0 ) ? $orr_arr[2] : -$orr_arr[2],
 							'initialHome' 		=> $orr_arr[3],
 							'initialAway' 		=> $orr_arr[4],
-							'instantHandicap' 	=> $orr_arr[5],
+							'instantHandicap' 	=> ( $orr_arr[5] > 0 ) ? -$orr_arr[5] : $orr_arr[5],
+							'instantHandicapAway' => ( $orr_arr[5] > 0 ) ? $orr_arr[5] : -$orr_arr[5],
 							'instantHome' 		=> $orr_arr[6],
 							'instantAway' 		=> $orr_arr[7],
 							'fluctuatingHandicap' => round( abs($orr_arr[2] - $orr_arr[5]), 2 ),
@@ -168,10 +170,12 @@ class OddsController extends BaseController
 						break;
 					case 'handicapHalf':
 						$odd_type_arr = [
-							'initialHandicap' 	=> $orr_arr[2],
+							'initialHandicap' 		=> ( $orr_arr[2] > 0 ) ? -$orr_arr[2] : $orr_arr[2],
+							'initialHandicapAway' 	=> ( $orr_arr[2] > 0 ) ? $orr_arr[2] : -$orr_arr[2],
 							'initialHome' 		=> $orr_arr[3],
 							'initialAway' 		=> $orr_arr[4],
-							'instantHandicap' 	=> $orr_arr[5],
+							'instantHandicap' 	=> ( $orr_arr[5] > 0 ) ? -$orr_arr[5] : $orr_arr[5],
+							'instantHandicapAway' => ( $orr_arr[5] > 0 ) ? $orr_arr[5] : -$orr_arr[5],
 							'instantHome' 		=> $orr_arr[6],
 							'instantAway' 		=> $orr_arr[7],
 							'fluctuatingHandicap' => round( abs($orr_arr[2] - $orr_arr[5]), 2 ),
