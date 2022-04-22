@@ -19,6 +19,7 @@
 
       <div class="table-responsive">
         <div class="mw-1300 py-3">
+        
           <div class="dntable-filter d-sm-flex align-items-center mb-3">
             <div class="me-3 mb-2">
               <span>Thời gian đá:</span>
@@ -29,7 +30,7 @@
 
             <div class="me-3 mb-2">
               <span>Thời gian biến động kèo:</span>
-              <select name="" id="" >
+              <select name="" id="">
                 <option value="">3h</option>
                 <option value="">6h</option>
                 <option value="">12h</option>
@@ -42,22 +43,31 @@
             <div class="me-3 mb-2">
               <span>Biến động Handicap:</span>
               <select name="" id="" v-on:change="app_filter_handicap($event.target.value)">
-                <option value="0">0</option>
+                <option value="">0</option>
                 <option value="0.25">0.25</option>
                 <option value="0.5">0.5</option>
                 <option value="0.75">0.75</option>
                 <option value="1">1</option>
-                            </select>
+              </select>
             </div>
 
             <div class="me-3 mb-2">
               <span>Biến động Tài / Xỉu :</span>
               <select name="" id="" v-on:change="app_filter_overunder($event.target.value)">
-                <option value="0">0</option>
+                <option value="">0</option>
                 <option value="0.25">0.25</option>
                 <option value="0.5">0.5</option>
                 <option value="0.75">0.75</option>
                 <option value="1">1</option>
+              </select>
+            </div>
+
+            <div class="me-3 mb-2">
+              <span>FT/HT:</span>
+              <select name="" id="" v-on:change="app_filter_model($event.target.value)">
+                <option value="">All</option>
+                <option value="ft">FT</option>
+                <option value="ht">HT</option>
               </select>
             </div>
 
@@ -103,7 +113,7 @@
 
               <tr v-for="item of items" 
                 v-bind:matchId="item.matchId" 
-                v-if="matches_odds && checkShowMatch(item,matches_odds)"
+                v-if="matches_odds && typeof matches_odds[item.matchId] != 'undefined' && checkShowMatch(item,matches_odds)"
                 >
                 <td class="td-time">{{ item.matchTime }}</td>
                 <td class="td-timestart">Unknow</td>
@@ -489,10 +499,11 @@
           label_dates : [],
           filter_leagues : [],
           options : '',
-          api_url : 'http://localhost/PHP/caothu/api/',
+          api_url : 'http://localhost/caothu/api/',
           f_date : '',
           f_handicap : '',
           f_overunder : '',
+          f_model : '',
         },
         methods: {
           get_matches(){
@@ -572,6 +583,9 @@
             this.f_overunder = value;
             //this.do_filter();
           },
+          app_filter_model(value){
+            this.f_model = value;
+          },
           do_filter(){
             this.options = '&date='+this.f_date+'&handicap='+this.f_handicap+'&overunder='+this.f_overunder;
             this.live_matches = null;
@@ -582,28 +596,45 @@
           },
           checkShowMatch(item,matches_odds){
             var flag = false;
-            var handicap,handicapHalf = true;
-            var overunder,overunderHalf = true;
-            if( matches_odds && typeof matches_odds[item.matchId] != 'undefined' ){
-              flag = true;
-              if( typeof matches_odds[item.matchId]['handicap'] != 'undefined' && this.f_handicap != '' ){
-                if( this.f_handicap != matches_odds[item.matchId]['handicap']['fluctuatingHandicap'] ){
-                  handicap = false
+            var handicap = false;
+            var overUnder = false;
+
+            if( this.f_handicap == '' && this.f_overunder == '' ){
+              return true;
+            }
+            if( this.f_handicap == ''){
+              handicap = true;
+            }
+            if( this.f_overunder == ''){
+              overUnder = true;
+            }
+
+            if( matches_odds && typeof matches_odds[item.matchId] == 'object' ){
+              if( typeof matches_odds[item.matchId]['handicap'] != 'undefined' && this.f_handicap != '' && this.f_model != 'ht'){
+                if( this.f_handicap <= matches_odds[item.matchId]['handicap']['fluctuatingHandicap'] ){
+                  handicap = true
                 }
-                if( this.f_handicap != matches_odds[item.matchId]['handicapHalf']['fluctuatingHandicap'] ){
-                  handicapHalf = false
-                }
-                flag = ( handicap || handicapHalf );
               }
-              if( typeof matches_odds[item.matchId]['overUnder'] != 'undefined' && this.f_overunder != '' ){
-                if( this.f_overunder != matches_odds[item.matchId]['overUnder']['fluctuatingHandicap'] ){
-                  overunder = false
+              if( typeof matches_odds[item.matchId]['handicapHalf'] != 'undefined' && this.f_handicap != ''  && this.f_model != 'ft'){
+                if( this.f_handicap <= matches_odds[item.matchId]['handicapHalf']['fluctuatingHandicap'] ){
+                  handicap = true
                 }
-                if( this.f_overunder != matches_odds[item.matchId]['overUnderHalf']['fluctuatingHandicap'] ){
-                  overunderHalf = false
+              }
+
+              if( typeof matches_odds[item.matchId]['overUnder'] != 'undefined' && this.f_overunder != ''  && this.f_model != 'ht'){
+                if( this.f_overunder <= matches_odds[item.matchId]['overUnder']['fluctuatingHandicap'] ){
+                  overUnder = true
                 }
-                flag = ( overunder || overunderHalf );
-              }                          
+              }
+              if( typeof matches_odds[item.matchId]['overUnderHalf'] != 'undefined' && this.f_overunder != ''  && this.f_model != 'ft'){
+                if( this.f_overunder <= matches_odds[item.matchId]['overUnderHalf']['fluctuatingHandicap'] ){
+                  overUnder = true
+                }
+              }
+
+              flag = handicap && overUnder
+            }else{
+              flag = false
             }
             return flag;
           }
