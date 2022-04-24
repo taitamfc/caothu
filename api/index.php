@@ -8,9 +8,12 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 define('IMG_DIR', dirname(__FILE__));
 define('IMG_URL', 'https://api.vaobo.com');
 
+global $AppDB;
+
 include 'system/config.php';
 include 'system/helper.php';
-
+require_once 'system/MysqliDb.php';
+$AppDB  = new MysqliDb(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 // Get Controller
 if (!isset($_GET['c'])) {

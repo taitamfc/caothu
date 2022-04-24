@@ -114,24 +114,28 @@ class OddsController extends BaseController
 			foreach ($odd_items as $odd_item) {
 				$matchId = current( explode(',',$odd_item) );
 				$orr_arr = explode(',',$odd_item);
+				for ($i=2; $i <= 7; $i++) { 
+					$orr_arr[$i] *= 1;
+				}
+				
 				switch($odd_type){
 					case 'handicap':
 						$odd_type_arr = [
-							'initialHandicap' 		=> ( $orr_arr[2] > 0 ) ? -$orr_arr[2] : $orr_arr[2],
-							'initialHandicapAway' 	=> ( $orr_arr[2] > 0 ) ? $orr_arr[2] : -$orr_arr[2],
+							'initialHandicap' 		=> $orr_arr[2] * -1,
+							'initialHandicapAway' 	=> ( $orr_arr[2] * -1 ) * -1,
 							'initialHome' 		=> $orr_arr[3],
 							'initialAway' 		=> $orr_arr[4],
-							'instantHandicap' 	=> ( $orr_arr[5] > 0 ) ? -$orr_arr[5] : $orr_arr[5],
-							'instantHandicapAway' => ( $orr_arr[5] > 0 ) ? $orr_arr[5] : -$orr_arr[5],
+							'instantHandicap' 	=> $orr_arr[5] * -1,
+							'instantHandicapAway' => ( $orr_arr[5] * -1 ) * -1,
 							'instantHome' 		=> $orr_arr[6],
 							'instantAway' 		=> $orr_arr[7],
-							'fluctuatingHandicap' => round( abs($orr_arr[2] - $orr_arr[5]), 2 ),
+							'fluctuatingHandicap' => number_format(abs($orr_arr[2] - $orr_arr[5]),2),
 							'fluctuatingHandicapUp' => ($orr_arr[2] < $orr_arr[5]) ? true : false,
 							'fluctuatingHandicapDown' => ($orr_arr[2] > $orr_arr[5]) ? true : false,
-							'fluctuatingHome' 	=> round( abs($orr_arr[3] - $orr_arr[6]), 2 ),
+							'fluctuatingHome' 	=> number_format(abs($orr_arr[3] - $orr_arr[6]),2),
 							'fluctuatingHomeUp' => ($orr_arr[3] < $orr_arr[6]) ? true : false,
 							'fluctuatingHomeDown' => ($orr_arr[3] > $orr_arr[6]) ? true : false,
-							'fluctuatingAway' 	=> round( abs($orr_arr[4] - $orr_arr[7]), 2 ),
+							'fluctuatingAway' 	=> number_format(abs($orr_arr[4] - $orr_arr[7]),2),
 							'fluctuatingAwayUp' => ($orr_arr[4] < $orr_arr[7]) ? true : false,
 							'fluctuatingAwayDown' => ($orr_arr[4] > $orr_arr[7]) ? true : false,
 						];
@@ -157,34 +161,34 @@ class OddsController extends BaseController
 							'instantHandicap' 	=> $orr_arr[5],
 							'instantOver' 		=> $orr_arr[6],
 							'instantUnder' 		=> $orr_arr[7],
-							'fluctuatingHandicap' => round( abs($orr_arr[2] - $orr_arr[5]), 2 ),
+							'fluctuatingHandicap' => number_format( abs($orr_arr[2] - $orr_arr[5]), 2 ),
 							'fluctuatingHandicapUp' => ($orr_arr[2] < $orr_arr[5]) ? true : false,
 							'fluctuatingHandicapDown' => ($orr_arr[2] > $orr_arr[5]) ? true : false,
-							'fluctuatingOver' 		=> round( abs($orr_arr[3] - $orr_arr[6]), 2 ),
+							'fluctuatingOver' 		=> number_format( abs($orr_arr[3] - $orr_arr[6]), 2 ),
 							'fluctuatingOverUp' 	=> ($orr_arr[3] < $orr_arr[6]) ? true : false,
 							'fluctuatingOverDown' 	=> ($orr_arr[3] > $orr_arr[6]) ? true : false,
-							'fluctuatingUnder' 		=> round( abs($orr_arr[4] - $orr_arr[7]), 2 ),
+							'fluctuatingUnder' 		=> number_format( abs($orr_arr[4] - $orr_arr[7]), 2 ),
 							'fluctuatingUnderUp' 	=> ($orr_arr[4] < $orr_arr[7]) ? true : false,
 							'fluctuatingUnderDown' 	=> ($orr_arr[4] > $orr_arr[7]) ? true : false,
 						];
 						break;
 					case 'handicapHalf':
 						$odd_type_arr = [
-							'initialHandicap' 		=> ( $orr_arr[2] > 0 ) ? -$orr_arr[2] : $orr_arr[2],
-							'initialHandicapAway' 	=> ( $orr_arr[2] > 0 ) ? $orr_arr[2] : -$orr_arr[2],
+							'initialHandicap' 		=> $orr_arr[2] * -1,
+							'initialHandicapAway' 	=> ( $orr_arr[2] * -1 ) * -1,
 							'initialHome' 		=> $orr_arr[3],
 							'initialAway' 		=> $orr_arr[4],
-							'instantHandicap' 	=> ( $orr_arr[5] > 0 ) ? -$orr_arr[5] : $orr_arr[5],
-							'instantHandicapAway' => ( $orr_arr[5] > 0 ) ? $orr_arr[5] : -$orr_arr[5],
+							'instantHandicap' 	=> $orr_arr[5] * -1,
+							'instantHandicapAway' => ( $orr_arr[5] * -1 ) * -1,
 							'instantHome' 		=> $orr_arr[6],
 							'instantAway' 		=> $orr_arr[7],
-							'fluctuatingHandicap' => round( abs($orr_arr[2] - $orr_arr[5]), 2 ),
+							'fluctuatingHandicap' => number_format(abs($orr_arr[2] - $orr_arr[5]),2),
 							'fluctuatingHandicapUp' => ($orr_arr[2] < $orr_arr[5]) ? true : false,
 							'fluctuatingHandicapDown' => ($orr_arr[2] > $orr_arr[5]) ? true : false,
-							'fluctuatingHome' 	=> round( abs($orr_arr[3] - $orr_arr[6]), 2 ),
+							'fluctuatingHome' 	=> number_format(abs($orr_arr[3] - $orr_arr[6]),2),
 							'fluctuatingHomeUp' => ($orr_arr[3] < $orr_arr[6]) ? true : false,
 							'fluctuatingHomeDown' => ($orr_arr[3] > $orr_arr[6]) ? true : false,
-							'fluctuatingAway' 	=> round( abs($orr_arr[4] - $orr_arr[7]), 2 ),
+							'fluctuatingAway' 	=> number_format(abs($orr_arr[4] - $orr_arr[7]),2),
 							'fluctuatingAwayUp' => ($orr_arr[4] < $orr_arr[7]) ? true : false,
 							'fluctuatingAwayDown' => ($orr_arr[4] > $orr_arr[7]) ? true : false,
 						];
@@ -197,13 +201,13 @@ class OddsController extends BaseController
 							'instantHandicap' 	=> $orr_arr[5],
 							'instantOver' 		=> $orr_arr[6],
 							'instantUnder' 		=> $orr_arr[7],
-							'fluctuatingHandicap' => round( abs($orr_arr[2] - $orr_arr[5]), 2 ),
+							'fluctuatingHandicap' => number_format( abs($orr_arr[2] - $orr_arr[5]), 2 ),
 							'fluctuatingHandicapUp' => ($orr_arr[2] < $orr_arr[5]) ? true : false,
 							'fluctuatingHandicapDown' => ($orr_arr[2] > $orr_arr[5]) ? true : false,
-							'fluctuatingOver' 		=> round( abs($orr_arr[3] - $orr_arr[6]), 2 ),
+							'fluctuatingOver' 		=> number_format( abs($orr_arr[3] - $orr_arr[6]), 2 ),
 							'fluctuatingOverUp' 	=> ($orr_arr[3] < $orr_arr[6]) ? true : false,
 							'fluctuatingOverDown' 	=> ($orr_arr[3] > $orr_arr[6]) ? true : false,
-							'fluctuatingUnder' 		=> round( abs($orr_arr[4] - $orr_arr[7]), 2 ),
+							'fluctuatingUnder' 		=> number_format( abs($orr_arr[4] - $orr_arr[7]), 2 ),
 							'fluctuatingUnderUp' 	=> ($orr_arr[4] < $orr_arr[7]) ? true : false,
 							'fluctuatingUnderDown' 	=> ($orr_arr[4] > $orr_arr[7]) ? true : false,
 						];

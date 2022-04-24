@@ -7,19 +7,22 @@ include SYSTEM . 'BaseController.php';
 */
 class ScheduleController extends BaseController
 {
+	private $_table = 'schedule';
+
     public function index()
     {
 		$date   = ( isset($_GET['date']) && $_GET['date'] !='' ) ? $_GET['date'] : date('Y-m-d');
 		$sl_leagues   = ( isset($_GET['leagues']) && $_GET['leagues'] != '' ) ? explode(',',$_GET['leagues']) : [];
 		$only_leagues = [];
-		if( date('w',strtotime($date)) == 6 || date('w',strtotime($date)) == 7 ){
-			$only_leagues = [
-				'English Premier League' => 1639,
-				'German Bundesliga' => 188,
-				'Italian Serie A' => 1437,
-				'Spanish La Liga' => 1134,
-			];
-		}
+		// if( date('w',strtotime($date)) == 6 || date('w',strtotime($date)) == 7 ){
+			// $only_leagues = [
+				// 'English Premier League' => 1639,
+				// 'German Bundesliga' => 188,
+				// 'Italian Serie A' => 1437,
+				// 'Spanish La Liga' => 1134,
+			// ];
+		// }
+
 		//lich thi dau
 		$schedule_url   = API_URL."/sport/football/schedule/basic?api_key=".API_KEY.'&date='.$date;
 		$json_data      = file_get_contents($schedule_url);
@@ -35,9 +38,9 @@ class ScheduleController extends BaseController
 		$matches = [];
 		//get leagues for current matches
 		$leagues = [];
-
+		$i=0;
 		foreach ($all_schedules as $key => $value) {
-			
+			//if($i> 500) break; $i++;
 			if( $value->matchTime < time() ){
 				continue;
 			}
@@ -68,4 +71,5 @@ class ScheduleController extends BaseController
         $res['msg'] = __METHOD__;
       	$this->resJson($res,1);
     }
+
 }
